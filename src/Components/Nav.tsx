@@ -10,20 +10,26 @@ const Nav = () => {
     await signOut(auth);
   };
   return (
-    <>
-      <Link to="/">Home</Link>
-      <Link to="/login">Login</Link>
-      <div>
+    <div className="navbar">
+      <div className="links">
+        <Link to="/"> Home </Link>
+        {!user ? (
+          <Link to="/login"> Login </Link>
+        ) : (
+          <Link to="/CreatePost"> +Post </Link>
+        )}
+      </div>
+      <div className="user">
         {user && (
           <>
             <p>{user?.displayName}</p>
-            <img src={user?.photoURL || "profile picture"} />
+            <img src={user?.photoURL || "profile picture"} width='20' height='20' />
             <br />
             <button onClick={logout}>Log Out</button>
           </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

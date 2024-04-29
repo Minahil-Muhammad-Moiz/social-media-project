@@ -12,9 +12,9 @@ const Login = () => {
       navigate('/')
     }
   return (
-    <div>
+    <div className='loginPage'>
       <h1>Login</h1>
-        <button onClick={googleSignin}>SignIn with Google</button>
+        <button onClick={googleSignin} className='login-with-google-btn'>SignIn with Google</button>
     </div>
   )
 }
