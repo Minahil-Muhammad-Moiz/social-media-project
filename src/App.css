@@ -49,6 +49,7 @@ a {
   height: calc(100vh - 80px);
   display: grid;
   place-items: center;
+  background-color: #f7f7f7;
 }
 
 .cpContainer {
@@ -62,7 +63,27 @@ a {
   flex-direction: column;
 }
 
-.cpContainer h1 {
+input, textarea {
+  padding: 8px 10px;
+  margin: 3px 8px 16px 8px;
+  background-color: #f7f7f7;
+  border: 0px transparent;
+  border-radius: 5px;
+  color:rgb(0, 0, 31);
+  font-size: 16px;
+  z-index: 1;
+}
+
+.subBtn{
+  margin-top: 0;
+  margin: 0 auto 20px auto;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+}
+/* .cpContainer h1 {
   text-align: center;
 }
 
@@ -90,18 +111,11 @@ a {
   height: 150px;
 }
 
-.cpContainer button {
-  margin-top: 20px;
-  height: 40px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 18px;
-}
+
 input,
 textarea {
   margin-top: 5px;
-}
+} */
 
 .loginPage {
   width: 100vw;
@@ -205,3 +219,4 @@ textarea {
   overflow: hidden;
   overflow-y: auto;
 }
+
