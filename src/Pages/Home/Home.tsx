@@ -3,7 +3,7 @@ import { getDocs, collection } from "firebase/firestore";
 import { database } from "../../Config/firebase";
 import Post from "./Post";
 
-interface Post {
+export interface IPost {
   id: string;
   userid: string;
   title: string;
@@ -12,13 +12,15 @@ interface Post {
 }
 
 const Home = () => {
-  const [postsList, setPostsList] = useState<Post[] | null>(null);
-
+  const [postsList, setPostsList] = useState<IPost[] | null>(null);
   const postsRef = collection(database, "posts");
+
   const getPosts = async () => {
     const data = await getDocs(postsRef);
+    console.log(data);
+    
     setPostsList(
-      data.docs.map((doc) => ({ ...doc.data, id: doc.id })) as Post[]
+      data.docs.map((doc) => ({ ...doc.data(), id: doc.id })) as IPost[]
     );
   };
 
@@ -29,7 +31,7 @@ const Home = () => {
   return (
     <div className="homePage">
       {postsList?.map((post) => (
-        <Post />
+        <Post post={post}/>
       ))}
     </div>
   );
