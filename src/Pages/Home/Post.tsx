@@ -3,6 +3,7 @@ import { IPost } from "./Home";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDocs,
   query,
@@ -16,6 +17,7 @@ interface Props {
 }
 
 interface likes {
+  likeId: string;
   userID: string;
 }
 
@@ -29,15 +31,31 @@ const Post = (props: Props) => {
 
   const addlikes = async () => {
     try {
-      await addDoc(likesRef, {
+      const newDoc = await addDoc(likesRef, {
         userID: user?.uid,
         postID: post.id,
       });
 
       if (user) {
         setLikes((prev) =>
-          prev ? [...prev, { userID: user.uid }] : [{ userID: user.uid }]
+          prev ? [...prev, { userID: user.uid, likeId: newDoc.id }] : [{ userID: user.uid, likeId: newDoc.id }]
         );
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const removelikes = async () => {
+    try {
+      const dltLikeQuery = query(likesRef, where("postID", "==", post.id), where('userID', '==', user?.uid));
+      const dltLikeData = await getDocs(dltLikeQuery);
+      const likeID = dltLikeData.docs[0].id
+      const dltLike = doc(database, 'likes', likeID)
+      
+      await deleteDoc(dltLike)
+      if (user) {
+        setLikes((prev) => prev && prev.filter((like)=> like.likeId === likeID));
       }
     } catch (err) {
       console.log(err);
@@ -46,7 +64,7 @@ const Post = (props: Props) => {
 
   const likesDisplay = async () => {
     const data = await getDocs(likesDoc);
-    setLikes(data.docs.map((doc) => ({ userID: doc.data().userID })));
+    setLikes(data.docs.map((doc) => ({ userID: doc.data().userID, likeId: doc.id })));
   };
 
   const liked = Likes?.find((like) => like.userID === user?.uid);
@@ -63,8 +81,7 @@ const Post = (props: Props) => {
       <div>
         <p className="postTextContainer">@ {post.username}</p>
         <p className="postTextContainer">{post.description}</p>
-        <button onClick={addlikes}>
-          {" "}
+        <button onClick={liked ? removelikes : addlikes}>
           {liked ? <>&#128078;</> : <>&#128077;</>}{" "}
         </button>
         {Likes && <p> Likes: {Likes.length}</p>}
